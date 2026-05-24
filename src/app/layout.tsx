@@ -8,9 +8,9 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Aluro | Quiet Digital Experiences",
+  title: "Aluro - Webflow HTML website template",
   description:
-    "A dark, minimal portfolio landing page inspired by Aluro and built with Next.js, TypeScript, and Tailwind CSS.",
+    "A sleek Webflow portfolio template built for professionals, studios, and brands. Aluro features dark and light modes, smooth interactions, and a flexible, responsive layout.",
 };
 
 export default function RootLayout({
