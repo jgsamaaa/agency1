@@ -21,6 +21,14 @@ html {
   scroll-behavior: smooth;
 }
 
+button,
+a,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
 @keyframes marquee {
   from {
     transform: translateX(0);
@@ -33,6 +41,276 @@ html {
 
 .animate-marquee {
   animation: marquee 28s linear infinite;
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.split-line {
+  display: block;
+  overflow: hidden;
+}
+
+.split-word {
+  display: inline-block;
+  margin-right: 0.2em;
+  opacity: 0;
+  transform: translateY(100%) rotate(2deg);
+  transition:
+    opacity 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.is-visible .split-word,
+.split-line.is-visible .split-word {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
+}
+
+.nav-link {
+  border-radius: 8px;
+  color: color-mix(in srgb, #f6f3f0 70%, transparent);
+  display: inline-flex;
+  overflow: hidden;
+  padding: 0.5rem 0.75rem;
+  position: relative;
+  transition:
+    background-color 250ms ease,
+    color 250ms ease;
+}
+
+@media (min-width: 640px) {
+  .nav-link {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.nav-link span {
+  display: block;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link::after {
+  content: attr(href);
+  display: none;
+}
+
+.nav-link:hover {
+  background: color-mix(in srgb, #f6f3f0 10%, transparent);
+  color: #f6f3f0;
+}
+
+.nav-link:hover span {
+  transform: translateY(-2px);
+}
+
+.nav-contact {
+  background: #f6f3f0;
+  border-radius: 8px;
+  color: #0b0c0e;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition:
+    background-color 250ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-contact:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.hero-portrait {
+  animation: hero-rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(36px) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.service-card {
+  transform-origin: center top;
+  transition:
+    transform 160ms linear,
+    border-color 300ms ease,
+    background-color 300ms ease;
+}
+
+.service-card:hover {
+  background: #141720;
+  border-color: color-mix(in srgb, #0055fe 54%, transparent);
+}
+
+.work-slide {
+  perspective: 900px;
+}
+
+.work-slide > div {
+  transition:
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms ease;
+}
+
+.work-slide:hover > div {
+  transform: translateY(-4px);
+}
+
+.slider-button {
+  align-items: center;
+  background: color-mix(in srgb, #f6f3f0 8%, transparent);
+  border: 1px solid color-mix(in srgb, #f6f3f0 14%, transparent);
+  border-radius: 999px;
+  color: #f6f3f0;
+  display: inline-flex;
+  height: 36px;
+  justify-content: center;
+  transition:
+    background-color 250ms ease,
+    border-color 250ms ease,
+    transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+  width: 36px;
+}
+
+.slider-button:hover {
+  background: #0055fe;
+  border-color: #0055fe;
+  transform: scale(1.08);
+}
+
+.cta-button {
+  align-items: center;
+  background: #f6f3f0;
+  border-radius: 8px;
+  color: #0b0c0e;
+  display: inline-flex;
+  font-size: 0.875rem;
+  font-weight: 700;
+  height: 44px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 1.25rem;
+  position: relative;
+  transition:
+    background-color 250ms ease,
+    color 250ms ease,
+    transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cta-button span {
+  display: block;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cta-button span:nth-child(2) {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 170%);
+  white-space: nowrap;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+}
+
+.cta-button:hover span:first-child {
+  transform: translateY(-170%);
+}
+
+.cta-button:hover span:nth-child(2) {
+  transform: translate(-50%, -50%);
+}
+
+.cta-button.outline {
+  background: transparent;
+  border: 1px solid color-mix(in srgb, #ffffff 25%, transparent);
+  color: #ffffff;
+}
+
+.cta-button.outline:hover {
+  background: color-mix(in srgb, #ffffff 10%, transparent);
+}
+
+.cta-button.light {
+  background: #ffffff;
+}
+
+.cta-button.blue {
+  background: #0055fe;
+  color: #ffffff;
+  width: 150px;
+}
+
+.footer-link {
+  color: color-mix(in srgb, #f6f3f0 62%, transparent);
+  transition:
+    color 250ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  width: fit-content;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.contact-form {
+  color-scheme: light;
+}
+
+.contact-label {
+  display: grid;
+  gap: 0.5rem;
+  text-transform: lowercase;
+}
+
+.contact-label span {
+  color: color-mix(in srgb, #0b0c0e 68%, transparent);
+  font-size: 0.875rem;
+}
+
+.contact-field {
+  background: #f8f8f8;
+  border: 1px solid color-mix(in srgb, #0b0c0e 16%, transparent);
+  border-radius: 8px;
+  color: #0b0c0e;
+  min-height: 49px;
+  outline: none;
+  padding: 0.75rem 1rem;
+  transition:
+    border-color 250ms ease,
+    box-shadow 250ms ease;
+  width: 100%;
+}
+
+.contact-field:focus {
+  border-color: #0055fe;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #0055fe 16%, transparent);
+}
+
+.video-cta {
+  transition:
+    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 ::selection {
