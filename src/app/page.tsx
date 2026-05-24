@@ -1,230 +1,560 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
-const services = [
+const navItems = [
+  { label: "Services", href: "#services" },
+  { label: "Work", href: "#work" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
+];
+
+const serviceItems = [
   {
-    title: "Website builds",
+    number: "01",
+    title: "Website Design",
     description:
-      "Fast, polished Next.js sites with reusable sections, clean CMS-ready structure, and responsive details handled from the start.",
+      "I design modern, minimal websites that balance beauty with usability. Each layout is built to tell a story, guide visitors naturally, and feel effortless to navigate.",
   },
   {
-    title: "Brand systems",
+    number: "02",
+    title: "UI/UX Design",
     description:
-      "Identity, type, color, and page patterns shaped into a web system that feels consistent across every touchpoint.",
+      "Great design starts with understanding. I map out user journeys, define key moments, and shape interfaces that feel intuitive from the first click.",
   },
   {
-    title: "Conversion pages",
+    number: "03",
+    title: "Visual Direction",
     description:
-      "Landing pages, offer pages, and launch pages written and designed around clear action, trust, and momentum.",
+      "A brand is more than a logo; it is how everything feels together. I craft cohesive visual systems around color, typography, and tone.",
+  },
+  {
+    number: "04",
+    title: "Motion & Interaction",
+    description:
+      "Movement brings design to life. Subtle transitions, scroll-based animations, and micro-interactions help every interface feel dynamic and alive.",
   },
 ];
 
-const projects = [
-  "SaaS launch page",
-  "Local service site",
-  "Portfolio refresh",
-  "Product campaign",
+const workItems = [
+  {
+    title: "Auralis",
+    tags: ["Landing Page", "Brand Experience"],
+    description:
+      "Product landing page for a sound design startup blending tech and emotion.",
+    image: "/aluro/work-auralis.avif",
+  },
+  {
+    title: "Lumina Studio",
+    tags: ["Web Design", "UI/UX"],
+    description:
+      "A creative agency website built around motion and minimalism.",
+    image: "/aluro/work-lumina.avif",
+  },
+  {
+    title: "Moden Interiors",
+    tags: ["E-commerce", "UI Design"],
+    description:
+      "Clean and tactile interface for a boutique interior design brand.",
+    image: "/aluro/work-moden.avif",
+  },
+  {
+    title: "Nexora",
+    tags: ["Portfolio", "Interactions"],
+    description:
+      "Futuristic portfolio for a motion designer, powered by smooth transitions.",
+    image: "/aluro/work-nexora.avif",
+  },
+  {
+    title: "Verse",
+    tags: ["UI/UX", "Dashboard"],
+    description: "Dashboard concept designed for clarity and calm data storytelling.",
+    image: "/aluro/work-verse.avif",
+  },
+  {
+    title: "Solen",
+    tags: ["Portfolio", "Visual Design"],
+    description:
+      "Personal brand site for a lifestyle photographer with cinematic visual focus.",
+    image: "/aluro/work-solen.avif",
+  },
 ];
 
-const process = ["Map", "Design", "Build", "Launch"];
+const pricing = {
+  monthly: [
+    {
+      title: "Essential",
+      eyebrow: "Simple, focused, effective.",
+      price: "$950",
+      description: "Perfect for personal sites and small teams.",
+      value: true,
+      features: [
+        "Custom one-page website design",
+        "Fully responsive layout",
+        "Light animations & interactions",
+        "Webflow CMS setup optional",
+        "SEO-ready structure",
+      ],
+    },
+    {
+      title: "Elevate",
+      eyebrow: "For stories that deserve motion.",
+      price: "$1,950",
+      description: "Best for growing businesses and creative studios.",
+      features: [
+        "Multi-page website up to 5 pages",
+        "Custom UI/UX design",
+        "Advanced GSAP-style animations",
+        "CMS & dynamic collections",
+        "Launch support & training",
+      ],
+    },
+  ],
+  yearly: [
+    {
+      title: "Essential",
+      eyebrow: "Simple, focused, effective.",
+      price: "$750",
+      description: "Perfect for personal sites and small teams.",
+      value: true,
+      features: [
+        "Custom one-page website design",
+        "Fully responsive layout",
+        "Light animations & interactions",
+        "Webflow CMS setup optional",
+        "SEO-ready structure",
+      ],
+    },
+    {
+      title: "Elevate",
+      eyebrow: "For stories that deserve motion.",
+      price: "$1,550",
+      description: "Best for growing businesses and creative studios.",
+      features: [
+        "Multi-page website up to 5 pages",
+        "Custom UI/UX design",
+        "Advanced GSAP-style animations",
+        "CMS & dynamic collections",
+        "Launch support & training",
+      ],
+    },
+  ],
+};
+
+const testimonials = [
+  {
+    quote:
+      "Aluro brought our brand to life with a design that feels effortless. Every detail, from layout to motion, just fits who we are.",
+    name: "Daniel M.",
+    role: "Creative Director",
+  },
+  {
+    quote:
+      "Working with Aluro was refreshing. Clear communication, beautiful design, and a deep understanding of what makes a website feel alive.",
+    name: "Lila R.",
+    role: "CEO",
+  },
+  {
+    quote:
+      "Every part of the site feels intentional, nothing overdone, nothing missing. It is clean, fast, and visually stunning.",
+    name: "Sofia T.",
+    role: "Marketing Manager",
+  },
+];
+
+const faqs = [
+  {
+    question: "What is Aluro?",
+    answer:
+      "Aluro is a single-page portfolio template built for creative people who want a clean, minimal, and impactful online presence.",
+  },
+  {
+    question: "Who is this template for?",
+    answer:
+      "It is ideal for UI/UX designers, freelancers, studios, and creatives who want a sleek one-page layout focused on visuals and storytelling.",
+  },
+  {
+    question: "Can I replace the images and animations with my own?",
+    answer:
+      "Yes. Every visual, section, and interaction is structured so it can be customized for a new brand or project direction.",
+  },
+  {
+    question: "Is it optimized for performance and responsiveness?",
+    answer:
+      "Yes. The page is built to stay fast, responsive, and easy to maintain across desktop and mobile screens.",
+  },
+];
+
+const marqueeWords = Array.from({ length: 18 }, (_, index) => `ALURO®-${index}`);
 
 export default function Home() {
+  const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
+  const [openFaq, setOpenFaq] = useState(0);
+
   return (
-    <main className="min-h-screen bg-white text-zinc-950">
-      <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
-        <a href="#" className="flex items-center gap-3" aria-label="Agency 1 home">
-          <span className="grid size-9 place-items-center rounded-md bg-zinc-950 text-sm font-semibold text-white">
-            A1
-          </span>
-          <span className="text-base font-semibold">Agency 1</span>
-        </a>
-
-        <nav className="hidden items-center gap-8 text-sm font-medium text-zinc-600 md:flex">
-          <a className="transition hover:text-zinc-950" href="#services">
-            Services
+    <main className="min-h-screen overflow-hidden bg-[#0b0c0e] text-[#f6f3f0]">
+      <header className="fixed left-0 right-0 top-0 z-50 px-4 pt-5 sm:px-6">
+        <div className="mx-auto flex max-w-4xl items-center justify-center gap-3">
+          <a
+            href="#top"
+            className="hidden text-sm font-medium tracking-[0.24em] text-[#f6f3f0]/70 sm:block"
+            aria-label="Aluro home"
+          >
+            ALURO
           </a>
-          <a className="transition hover:text-zinc-950" href="#work">
-            Work
-          </a>
-          <a className="transition hover:text-zinc-950" href="#process">
-            Process
-          </a>
-        </nav>
-
-        <a
-          href="mailto:hello@agency1.dev"
-          className="rounded-md bg-[#1769ff] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0f55d9] focus:outline-none focus:ring-2 focus:ring-[#1769ff] focus:ring-offset-2"
-        >
-          Start a project
-        </a>
+          <nav className="flex items-center gap-1 rounded-xl border border-[#f6f3f0]/10 bg-[#f6f3f0]/10 p-1.5 text-sm text-[#f6f3f0]/70 shadow-2xl shadow-black/30 backdrop-blur">
+            {navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="rounded-lg px-3 py-2 transition hover:bg-[#f6f3f0]/10 hover:text-[#f6f3f0] sm:px-4"
+              >
+                {item.label}
+              </a>
+            ))}
+            <a
+              href="mailto:office@eclipso.studio"
+              className="rounded-lg bg-[#f6f3f0] px-4 py-2 font-medium text-[#0b0c0e] transition hover:bg-white"
+            >
+              Contact
+            </a>
+          </nav>
+        </div>
       </header>
 
-      <section className="mx-auto grid w-full max-w-7xl items-center gap-8 px-5 pb-8 pt-5 sm:px-8 lg:grid-cols-[0.92fr_1.08fr] lg:pb-6 lg:pt-6">
-        <div className="max-w-2xl">
-          <h1 className="text-3xl font-semibold leading-[1.08] text-zinc-950 sm:text-5xl">
-            Websites that make your business look ready for the next stage.
-          </h1>
-          <p className="mt-5 max-w-xl text-base leading-7 text-zinc-600 sm:text-lg sm:leading-8">
-            Agency 1 designs and builds sharp marketing websites for founders,
-            creators, and service teams that need a credible web presence
-            without the drag of a huge process.
-          </p>
-
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <a
-              href="mailto:hello@agency1.dev"
-              className="rounded-md bg-zinc-950 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2"
+      <section
+        id="top"
+        className="relative flex min-h-[700px] items-center justify-center px-4 pb-10 pt-24 sm:min-h-[620px]"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(0,85,254,0.24),transparent_28%),radial-gradient(circle_at_50%_68%,rgba(246,243,240,0.08),transparent_24%)]" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-3 opacity-70">
+          {Array.from({ length: 3 }, (_, row) => (
+            <div
+              key={row}
+              className="flex min-w-max animate-marquee items-center gap-4"
+              style={{
+                animationDirection: row === 1 ? "reverse" : "normal",
+                animationDuration: `${24 + row * 5}s`,
+              }}
             >
-              Book a build
-            </a>
-            <a
-              href="#work"
-              className="rounded-md border border-zinc-300 px-5 py-3 text-center text-sm font-semibold text-zinc-950 transition hover:border-zinc-950 focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2"
-            >
-              View work
-            </a>
-          </div>
-
-          <dl className="mt-6 hidden max-w-lg grid-cols-3 gap-5 border-t border-zinc-200 pt-4 sm:grid">
-            <div>
-              <dt className="text-3xl font-semibold text-[#1769ff]">14</dt>
-              <dd className="mt-1 text-sm leading-5 text-zinc-500">day sprint</dd>
+              {marqueeWords.map((word) => (
+                <span
+                  key={`${word}-${row}`}
+                  className="text-[82px] font-medium leading-none text-[#f6f3f0]/20 sm:text-[142px] lg:text-[170px]"
+                >
+                  {word.split("-")[0]}
+                </span>
+              ))}
             </div>
-            <div>
-              <dt className="text-3xl font-semibold text-[#ff6b4a]">3</dt>
-              <dd className="mt-1 text-sm leading-5 text-zinc-500">core pages</dd>
-            </div>
-            <div>
-              <dt className="text-3xl font-semibold text-[#13a56b]">100%</dt>
-              <dd className="mt-1 text-sm leading-5 text-zinc-500">responsive</dd>
-            </div>
-          </dl>
+          ))}
         </div>
 
-        <div className="relative">
-          <div className="absolute -left-4 top-8 hidden h-24 w-24 rounded-md bg-[#13a56b] lg:block" />
-          <div className="absolute -right-4 bottom-8 hidden h-28 w-28 rounded-md bg-[#ff6b4a] lg:block" />
-          <div className="relative overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 shadow-2xl shadow-zinc-200">
+        <div className="relative z-10 flex w-full max-w-6xl flex-col items-center">
+          <div className="relative w-full max-w-[320px] overflow-hidden rounded-[22px] border border-[#f6f3f0]/10 bg-[#f6f3f0]/5 shadow-2xl shadow-black/60 sm:max-w-[360px]">
             <Image
-              src="/agency-hero.png"
-              alt="A design studio desk with website mockups, color swatches, and responsive screens."
-              width={1680}
-              height={945}
+              src="/aluro/hero-man.avif"
+              alt="Man in a blue suit for the Aluro hero section."
+              width={900}
+              height={1200}
               priority
-              className="aspect-[16/9] w-full object-cover sm:aspect-[16/10]"
+              className="aspect-[3/4] w-full object-cover"
             />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0b0c0e] via-[#0b0c0e]/50 to-transparent" />
           </div>
+          <p className="mt-6 max-w-sm text-center text-xs font-semibold uppercase tracking-[0.32em] text-[#f6f3f0]/80">
+            Designing quiet, confident digital experiences
+          </p>
         </div>
       </section>
 
-      <section id="services" className="border-y border-zinc-200 bg-zinc-50">
-        <div className="mx-auto grid w-full max-w-7xl gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[0.75fr_1.25fr]">
-          <div>
-            <h2 className="text-3xl font-semibold leading-tight text-zinc-950">
-              Built for teams that need the site to be clear, fast, and easy to
-              grow.
-            </h2>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {services.map((service) => (
+      <section id="services" className="px-4 pb-20 pt-10 sm:px-6 lg:pb-28 lg:pt-8">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-4xl font-medium text-[#f6f3f0] sm:text-5xl">
+            What I can help with.
+          </h2>
+          <div className="mt-12 divide-y divide-[#f6f3f0]/10 border-y border-[#f6f3f0]/10">
+            {serviceItems.map((service) => (
               <article
-                key={service.title}
-                className="rounded-lg border border-zinc-200 bg-white p-5"
+                key={service.number}
+                className="grid gap-6 py-8 sm:grid-cols-[0.6fr_1fr_auto] sm:items-start"
               >
-                <h3 className="text-lg font-semibold text-zinc-950">
+                <h3 className="text-2xl font-medium">
                   {service.title}
                 </h3>
-                <p className="mt-3 text-sm leading-6 text-zinc-600">
+                <p className="max-w-3xl text-base leading-7 text-[#f6f3f0]/62">
                   {service.description}
                 </p>
+                <span className="text-sm font-semibold text-[#0055fe]">
+                  {service.number}
+                </span>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="work" className="mx-auto w-full max-w-7xl px-5 py-16 sm:px-8">
-        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
-          <h2 className="max-w-2xl text-3xl font-semibold leading-tight text-zinc-950">
-            A flexible starter for copied sites, agency pages, and custom
-            landing pages.
-          </h2>
-          <p className="max-w-md text-sm leading-6 text-zinc-600">
-            This project is ready for real sections, client-specific copy,
-            image swaps, and deployment once each site direction is chosen.
-          </p>
-        </div>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {projects.map((project, index) => (
-            <article
-              key={project}
-              className="min-h-48 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
-            >
-              <div
-                className="mb-10 h-2 rounded-sm"
-                style={{
-                  backgroundColor:
-                    index === 0
-                      ? "#1769ff"
-                      : index === 1
-                        ? "#ff6b4a"
-                        : index === 2
-                          ? "#13a56b"
-                          : "#18181b",
-                }}
-              />
-              <h3 className="text-lg font-semibold text-zinc-950">{project}</h3>
-              <p className="mt-3 text-sm leading-6 text-zinc-600">
-                Strategy, design, responsive build, and launch-ready polish in a
-                tidy Next.js codebase.
-              </p>
-            </article>
-          ))}
+      <section id="work" className="px-4 py-20 sm:px-6 lg:py-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+            <h2 className="text-4xl font-medium sm:text-5xl">
+              Things I&apos;ve Designed.
+            </h2>
+            <span className="text-sm uppercase tracking-[0.26em] text-[#f6f3f0]/45">
+              Work Project
+            </span>
+          </div>
+          <div className="mt-10 grid gap-5 lg:grid-cols-2">
+            {workItems.map((item) => (
+              <a
+                key={item.title}
+                href="#work"
+                className="group overflow-hidden rounded-xl border-2 border-[#f6f3f0]/5 bg-[#f6f3f0]/[0.03] transition hover:border-[#0055fe]/80"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden bg-[#111318]">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    width={1000}
+                    height={700}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b0c0e] via-transparent to-transparent opacity-70" />
+                </div>
+                <div className="p-5 sm:p-6">
+                  <div className="flex flex-wrap gap-2">
+                    {item.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-[#f6f3f0]/10 px-3 py-1 text-xs text-[#f6f3f0]/60"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="mt-8 text-2xl font-medium">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 max-w-md text-sm leading-6 text-[#f6f3f0]/56">
+                    {item.description}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section id="process" className="bg-zinc-950 text-white">
-        <div className="mx-auto grid w-full max-w-7xl gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[0.85fr_1.15fr]">
-          <div>
-            <h2 className="text-3xl font-semibold leading-tight">
-              The process stays compact so the site keeps moving.
+      <section id="pricing" className="px-4 py-20 sm:px-6 lg:py-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
+            <h2 className="text-4xl font-medium sm:text-5xl">
+              Two ways to begin.
             </h2>
-            <p className="mt-4 max-w-lg text-sm leading-6 text-zinc-300">
-              Every build starts with the actual business goal, then turns into
-              reusable sections, clean copy blocks, and responsive pages that
-              are ready to ship.
+            <div className="flex w-fit rounded-xl border border-[#f6f3f0]/10 bg-[#f6f3f0]/5 p-1">
+              {(["monthly", "yearly"] as const).map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => setBilling(option)}
+                  className={`rounded-lg px-4 py-2 text-sm font-medium capitalize transition ${
+                    billing === option
+                      ? "bg-[#0055fe] text-white"
+                      : "text-[#f6f3f0]/58 hover:text-white"
+                  }`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-10 grid gap-5 lg:grid-cols-2">
+            {pricing[billing].map((plan) => (
+              <article
+                key={plan.title}
+                className="rounded-xl border border-[#f6f3f0]/10 bg-[#f6f3f0]/[0.04] p-6"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-2xl font-medium">
+                      {plan.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-[#f6f3f0]/54">
+                      {plan.eyebrow}
+                    </p>
+                  </div>
+                  {plan.value ? (
+                    <span className="rounded-full bg-[#0055fe] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white">
+                      Best Value
+                    </span>
+                  ) : null}
+                </div>
+                <p className="mt-8 text-5xl font-medium">
+                  {plan.price}
+                </p>
+                <p className="mt-3 text-sm text-[#f6f3f0]/56">
+                  {plan.description}
+                </p>
+                <a
+                  href="mailto:office@eclipso.studio"
+                  className="mt-8 block rounded-lg bg-[#f6f3f0] px-5 py-3 text-center text-sm font-semibold text-[#0b0c0e] transition hover:bg-white"
+                >
+                  Start with {plan.title}
+                </a>
+                <div className="mt-8 border-t border-[#f6f3f0]/10 pt-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f6f3f0]/40">
+                    You&apos;ll get
+                  </p>
+                  <ul className="mt-5 space-y-3 text-sm text-[#f6f3f0]/68">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="flex gap-3">
+                        <span className="mt-1 size-2 rounded-full bg-[#0055fe]" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials" className="px-4 py-20 sm:px-6 lg:py-28">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="max-w-2xl text-4xl font-medium sm:text-5xl">
+            Collaboration, in their words.
+          </h2>
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <figure
+                key={testimonial.name}
+                className="rounded-xl border border-[#f6f3f0]/10 bg-[#f6f3f0]/[0.035] p-6"
+              >
+                <blockquote className="text-lg leading-8 text-[#f6f3f0]/78">
+                  &quot;{testimonial.quote}&quot;
+                </blockquote>
+                <figcaption className="mt-10">
+                  <p className="font-medium">{testimonial.name}</p>
+                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-[#f6f3f0]/42">
+                    {testimonial.role}
+                  </p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" className="px-4 py-20 sm:px-6 lg:py-28">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.7fr_1fr]">
+          <h2 className="text-4xl font-medium sm:text-5xl">
+            Questions, answered.
+          </h2>
+          <div className="divide-y divide-[#f6f3f0]/10 border-y border-[#f6f3f0]/10">
+            {faqs.map((faq, index) => (
+              <div key={faq.question}>
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
+                  className="flex w-full items-center justify-between gap-4 py-6 text-left text-lg font-medium"
+                >
+                  <span>{faq.question}</span>
+                  <span className="text-[#0055fe]">
+                    {openFaq === index ? "-" : "+"}
+                  </span>
+                </button>
+                {openFaq === index ? (
+                  <p className="pb-6 text-base leading-7 text-[#f6f3f0]/60">
+                    {faq.answer}
+                  </p>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="cta"
+        className="relative mx-4 overflow-hidden rounded-[20px] border border-[#0055fe]/35 bg-[linear-gradient(135deg,#0055fe,#032d81)] px-6 py-20 text-center sm:mx-6 lg:mx-auto lg:max-w-6xl"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.26),transparent_35%)]" />
+        <div className="relative mx-auto max-w-3xl">
+          <h2 className="text-5xl font-medium sm:text-7xl">
+            Your story, well designed.
+          </h2>
+          <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-white/70">
+            Every brand has a story worth telling - let&apos;s design yours with
+            intention and style.
+          </p>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <a
+              href="mailto:office@eclipso.studio"
+              className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#0b0c0e] transition hover:bg-[#f6f3f0]"
+            >
+              Let&apos;s Collaborate
+            </a>
+            <a
+              href="#work"
+              className="rounded-lg border border-white/25 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              View Portfolio
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer className="px-4 py-16 sm:px-6">
+        <div className="mx-auto grid max-w-6xl gap-10 border-t border-[#f6f3f0]/10 pt-10 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
+          <div>
+            <p className="text-3xl font-medium">ALURO®</p>
+            <p className="mt-4 max-w-sm text-sm leading-6 text-[#f6f3f0]/52">
+              Every project starts with a story. I turn those stories into
+              digital experiences that feel effortless and expressive.
             </p>
           </div>
-          <ol className="grid gap-3 sm:grid-cols-4">
-            {process.map((step, index) => (
-              <li key={step} className="rounded-lg border border-white/15 p-5">
-                <span className="text-sm font-semibold text-[#6aa0ff]">
-                  0{index + 1}
-                </span>
-                <h3 className="mt-8 text-xl font-semibold">{step}</h3>
-              </li>
-            ))}
-          </ol>
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#f6f3f0]/38">
+              Company
+            </p>
+            <div className="mt-4 grid gap-3 text-sm text-[#f6f3f0]/62">
+              {navItems.map((item) => (
+                <a key={item.href} href={item.href} className="hover:text-white">
+                  {item.label === "Work" ? "Case Studies" : item.label}
+                </a>
+              ))}
+              <a href="#testimonials" className="hover:text-white">
+                Testimonials
+              </a>
+              <a href="mailto:office@eclipso.studio" className="hover:text-white">
+                Contact
+              </a>
+            </div>
+          </div>
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#f6f3f0]/38">
+              Social
+            </p>
+            <div className="mt-4 flex gap-3">
+              {["Ig", "Dr", "In", "X"].map((item) => (
+                <a
+                  key={item}
+                  href="#top"
+                  className="grid size-10 place-items-center rounded-lg border border-[#f6f3f0]/10 text-sm text-[#f6f3f0]/62 transition hover:border-[#0055fe] hover:text-white"
+                >
+                  {item}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
-      </section>
-
-      <section className="mx-auto flex w-full max-w-7xl flex-col gap-5 px-5 py-14 sm:px-8 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h2 className="text-3xl font-semibold text-zinc-950">
-            Ready for the first website copy.
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
-            Drop in the reference, screenshots, or target site direction, and
-            this stack is ready for the next build.
-          </p>
+        <div className="mx-auto mt-10 flex max-w-6xl flex-col justify-between gap-3 border-t border-[#f6f3f0]/10 pt-6 text-xs text-[#f6f3f0]/36 sm:flex-row">
+          <p>Aluro. All rights reserved. &copy; 2025</p>
+          <p>Made in Next.js, TypeScript, and Tailwind CSS.</p>
         </div>
-        <a
-          href="mailto:hello@agency1.dev"
-          className="rounded-md bg-[#1769ff] px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#0f55d9] focus:outline-none focus:ring-2 focus:ring-[#1769ff] focus:ring-offset-2"
-        >
-          Send the brief
-        </a>
-      </section>
+      </footer>
     </main>
   );
 }
